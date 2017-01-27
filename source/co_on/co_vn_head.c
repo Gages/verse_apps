@@ -385,7 +385,7 @@ float co_handle_node_head(BInputState *input, ENode *node, boolean reset)
 					break;
 					case VN_TAG_UINT32 :
 						sui_draw_text(0.0, y + size, SUI_T_SIZE, SUI_T_SPACE, "Integer:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
-						if(sui_type_number_uint(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &t.vuint32, tag, color, color, color, color))
+						if(sui_type_number_uint_rgba(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &t.vuint32, tag, color, color, color, color))
 							verse_send_tag_create(e_ns_get_node_id(node), i, j, e_ns_get_tag_name(node, i, j), k, &t);
 						sui_draw_rounded_square(-0.01, y + size + 0.125, 0.7, -0.14, co_line_color[0], co_line_color[1], co_line_color[2], color_light);
 						size -= 0.05;
@@ -418,22 +418,22 @@ float co_handle_node_head(BInputState *input, ENode *node, boolean reset)
 					break;
 					case VN_TAG_LINK :
 						sui_draw_text(0.0, y + size, SUI_T_SIZE, SUI_T_SPACE, "'Link:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
-						if(sui_type_number_uint(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &t.vlink, tag, color, color, color, color))
+						if(sui_type_number_uint_rgba(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &t.vlink, tag, color, color, color, color))
 							verse_send_tag_create(e_ns_get_node_id(node), i, j, e_ns_get_tag_name(node, i, j), k, &t);
 						sui_draw_rounded_square(-0.01, y + size + 0.125, 0.7, -0.14, co_line_color[0], co_line_color[1], co_line_color[2], color_light);
 						size -= 0.05;
 					break;
 					case VN_TAG_ANIMATION :
 						sui_draw_text(0.0, y + size, SUI_T_SIZE, SUI_T_SPACE, "Curve:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);
-						if(sui_type_number_uint(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &t.vanimation.curve, &tag->vanimation.curve, color, color, color, color))
+						if(sui_type_number_uint_rgba(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &t.vanimation.curve, &tag->vanimation.curve, color, color, color, color))
 							verse_send_tag_create(e_ns_get_node_id(node), i, j, e_ns_get_tag_name(node, i, j), k, &t);
 						size -= 0.05;
 						sui_draw_text(0.0, y + size, SUI_T_SIZE, SUI_T_SPACE, "Start:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
-						if(sui_type_number_uint(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &t.vanimation.start, &tag->vanimation.start, color, color, color, color))
+						if(sui_type_number_uint_rgba(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &t.vanimation.start, &tag->vanimation.start, color, color, color, color))
 							verse_send_tag_create(e_ns_get_node_id(node), i, j, e_ns_get_tag_name(node, i, j), k, &t);
 						size -= 0.05;
 						sui_draw_text(0.0, y + size, SUI_T_SIZE, SUI_T_SPACE, "End:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
-						if(sui_type_number_uint(input, 0.15, y + size, 0, .5, SUI_T_SIZE, &t.vanimation.end, &tag->vanimation.end, color, color, color, color))
+						if(sui_type_number_uint_rgba(input, 0.15, y + size, 0, .5, SUI_T_SIZE, &t.vanimation.end, &tag->vanimation.end, color, color, color, color))
 							verse_send_tag_create(e_ns_get_node_id(node), i, j, e_ns_get_tag_name(node, i, j), k, &t);
 						size -= 0.05;
 						sui_draw_rounded_square(-0.01, y + size + 0.275, 0.7, -0.24, co_line_color[0], co_line_color[1], co_line_color[2], color_light);
@@ -441,7 +441,7 @@ float co_handle_node_head(BInputState *input, ENode *node, boolean reset)
 					case VN_TAG_BLOB :
 						sui_draw_text(0.0, y + size, SUI_T_SIZE, SUI_T_SPACE, "Size:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
 						m = t.vblob.size;
-						if(sui_type_number_uint(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &m, tag, color, color, color, color))
+						if(sui_type_number_uint_rgba(input, 0.15, y + size, 0, 0.5, SUI_T_SIZE, &m, tag, color, color, color, color))
 						{
 							uint8 blob[VN_TAG_MAX_BLOB_SIZE];
 							t.vblob.size = m;
@@ -469,7 +469,7 @@ float co_handle_node_head(BInputState *input, ENode *node, boolean reset)
 								sprintf(nr, "%u", entry);
 								sui_draw_text(0.15 + (0.07 * (float)(l % 8)), y + size, SUI_T_SIZE, SUI_T_SPACE, "Size:", color_light, color_light, color_light);
 							}*/
-							if(sui_type_number_uint(input, 0.15 + (0.07 * (float)(l % 8)), y + size, 0, 0.5, SUI_T_SIZE, &entry, &((uint8*)tag->vblob.blob)[l], color, color, color, color))
+							if(sui_type_number_uint_rgba(input, 0.15 + (0.07 * (float)(l % 8)), y + size, 0, 0.5, SUI_T_SIZE, &entry, &((uint8*)tag->vblob.blob)[l], color, color, color, color))
 							{
 								uint8 blob[VN_TAG_MAX_BLOB_SIZE];
 								for(m = 0; m < tag->vblob.size; m++)

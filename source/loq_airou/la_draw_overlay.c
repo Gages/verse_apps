@@ -1015,7 +1015,7 @@ void draw_owerlay_edge(void)
 }
 
 
-extern draw_view_cage(void);
+extern boolean draw_view_cage(void);
 
 void la_do_owerlay(void)
 {

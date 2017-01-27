@@ -1,0 +1,4 @@
+.gitignore
+ROOT=$(TUP_CWD)/source
+CFLAGS+=-Wno-deprecated-declarations
+#CFLAGS+=-Werror -Wall

@@ -3,6 +3,7 @@ extern void		init_undo(void);
 extern void		undo_event_done(void);
 extern void		udg_connect(char *address);
 extern void		udg_connect_local(void);
+extern void     udg_end_event(void);
 
 extern void		udg_create_new_modeling_node(void);
 extern void		udg_destroy_node(uint32 node_id);
@@ -51,7 +52,7 @@ extern void		udg_redo_geometry(void);
 
 typedef struct{
 	char	group[16];
-	char	tag[16];	
+	char	tag[16];
 	double	vec[3];
 	double	select;
 }UNDOTag;

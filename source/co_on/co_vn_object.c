@@ -419,7 +419,7 @@ boolean co_handle_object(BInputState *input, ENode *node)
 
 			sui_draw_text(0.0, y, SUI_T_SIZE, SUI_T_SPACE, "Node ID:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
 			link_id = e_nso_get_link_node(link);
-			if(sui_type_number_uint(input, 0.15, y, 0.5, 0, SUI_T_SIZE, &link_id, link, color, color, color, color))
+			if(sui_type_number_uint_rgba(input, 0.15, y, 0.5, 0, SUI_T_SIZE, &link_id, link, color, color, color, color))
 				verse_send_o_link_set(rename_o_node_id, e_nso_get_link_id(link), link_id, e_nso_get_link_name(link), e_nso_get_link_target_id(link));
 			
 			if(input->mode == BAM_DRAW && (l_node = e_ns_get_node(0, link_id)) != NULL)
@@ -437,7 +437,7 @@ boolean co_handle_object(BInputState *input, ENode *node)
 
 			sui_draw_text(0.0, y, SUI_T_SIZE, SUI_T_SPACE, "Target ID:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
 			target = e_nso_get_link_target_id(link);
-			if(sui_type_number_uint(input, 0.15, y, 0, 0.5, SUI_T_SIZE, &target, ((uint8 *)link) + 1, color, color, color, color))
+			if(sui_type_number_uint_rgba(input, 0.15, y, 0, 0.5, SUI_T_SIZE, &target, ((uint8 *)link) + 1, color, color, color, color))
 				verse_send_o_link_set(rename_o_node_id, e_nso_get_link_id(link), e_nso_get_link_node(link), e_nso_get_link_name(link), target);
 			sui_draw_rounded_square(-0.3, y + 0.125, 1, -0.15, co_line_color[0], co_line_color[1], co_line_color[2], color_light);
 			y -= 0.075;

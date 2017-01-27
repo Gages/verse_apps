@@ -160,7 +160,7 @@ void la_t_paste(egreal *pos)
 void la_t_copy_to_new_geometry()
 {
 	egreal pos[3] = {0.0, 0.0, 0.0};
-	la_t_copy(&pos);
+	la_t_copy(&pos[0]);
 	udg_create_new_modeling_node();
 	la_new_node_paste = udg_get_modeling_node();
 }

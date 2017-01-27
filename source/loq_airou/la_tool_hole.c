@@ -376,7 +376,7 @@ typedef struct{
 }CBody;
 
 
-void add_plane(CHull *hull, egreal *normal, egreal dist)
+boolean add_plane(CHull *hull, egreal *normal, egreal dist)
 {
 	uint i;
 	for(i = 0; i < hull->count; i++)

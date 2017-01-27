@@ -417,7 +417,7 @@ boolean co_handle_geometry(BInputState *input, ENode *node)
 			e_nsg_get_bone_pos64(node, bone, t);
 			parent = e_nsg_get_bone_parent(node, bone);
 			sui_draw_text(-0.25, y, SUI_T_SIZE, SUI_T_SPACE, "PARENT", co_line_color[0], co_line_color[1], co_line_color[2], color_light);
-			if(sui_type_number_uint(input,0.15, y, 0, 0.15, SUI_T_SIZE, &parent, e_nsg_get_bone_weight(node, bone), color, color, color, color))
+			if(sui_type_number_uint_rgba(input,0.15, y, 0, 0.15, SUI_T_SIZE, &parent, e_nsg_get_bone_weight(node, bone), color, color, color, color))
 				verse_send_g_bone_create(change_g_node_id, bone, e_nsg_get_bone_weight(node, bone), ref, parent, t[0], t[1], t[2],
 							 e_nsg_get_bone_rot_label(node, bone), e_nsg_get_bone_rot_label(node, bone), e_nsg_get_bone_scale_label(node, bone));
 			y -= 0.05;

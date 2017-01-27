@@ -18,6 +18,11 @@ extern boolean	sui_box_down_click_test(float x_pos, float y_pos, float x_size, f
 /* GL draw helpers */
 
 extern void sui_draw_gl(uint draw_type, const float *array, uint length, uint dimentions, float red, float green, float blue, float alpha);
+
+__attribute__((deprecated))
+extern void sui_draw_gl_rgb(uint draw_type, const float *array, uint length, uint dimentions, float red, float green, float blue);
+
+
 extern void sui_draw_2d_line_gl(float start_x, float start_y, float end_x, float end_y, float red, float green, float blue, float alpha);
 extern void sui_draw_3d_line_gl(float start_x, float start_y,  float start_z, float end_x, float end_y, float end_z, float red, float green, float blue, float alpha);
 extern void sui_draw_elements_gl(uint draw_type, float *array, uint *reference, uint length, uint dimentions, float red, float green, float blue, float alpha);
@@ -50,6 +55,19 @@ extern float	sui_get_letter_size(unsigned char letter);
 
 extern void		sui_draw_text(float pos_x, float pos_y, float size, float spacing, const char *text, float red, float green, float blue, float alpha);
 extern float	sui_compute_text_length(float size, float spacing, const char *text);
+
+/* declarations added which were apparently missing,
+   hence the attribute. I don't know yet what they're
+   supposed to do. */
+
+__attribute__((deprecated))
+extern float sui_text_line_length(float size, float spacing, const char* text, int param);
+
+__attribute__((deprecated))
+extern void sui_text_screen_mode_update(void);
+
+__attribute__((deprecated))
+extern boolean sui_type_number_uint_rgba(BInputState *input, float pos_x, float pos_y, float center, float length, float size, uint32 *number, void *id, float red, float green, float blue, float alpha);
 
 extern boolean	sw_text_button(BInputState *input, float pos_x, float pos_y, float center, float size, float spacing, const char *text, float red, float green, float blue, float alpha);
 
@@ -210,8 +228,9 @@ extern void *sui_symbol_editor_func(BInputState *input, void *user_pointer);
 extern void *sui_font_editor_func(BInputState *input, void *user_pointer);
 
 
-extern void se_save_drawing_binary(void *file, SDrawing *d, uint draw_count);
-extern SDrawing *se_load_drawing_binary(void *file, uint *draw_count);
+extern void se_save_drawing_binary(FILE *file, SDrawing *d, uint draw_count);
+extern SDrawing *se_load_drawing_binary(FILE *file, uint *draw_count);
 
+extern uint se_compute_splits(SEditorLine* line);
 
 #endif

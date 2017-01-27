@@ -68,15 +68,15 @@ boolean co_handle_bitmap(BInputState *input, ENode *node)
 	{	
 		y -= 0.05;
 		sui_draw_text(0.0, y, SUI_T_SIZE, SUI_T_SPACE, "Width:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
-		if(sui_type_number_uint(input, 0.15, y, 0, 0.5, SUI_T_SIZE, &create_size[0], &create_size[0], color, color, color, color) && create_size[0] * create_size[1] * create_size[2] != 0)
+		if(sui_type_number_uint_rgba(input, 0.15, y, 0, 0.5, SUI_T_SIZE, &create_size[0], &create_size[0], color, color, color, color) && create_size[0] * create_size[1] * create_size[2] != 0)
 			verse_send_b_dimensions_set(change_b_node_id, create_size[0], create_size[1], create_size[2]);
 		y -= 0.05;
 		sui_draw_text(0.0, y, SUI_T_SIZE, SUI_T_SPACE, "Height:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
-		if(sui_type_number_uint(input, 0.15, y, 0, 0.5, SUI_T_SIZE, &create_size[1], &create_size[1], color, color, color, color) && create_size[0] * create_size[1] * create_size[2] != 0)
+		if(sui_type_number_uint_rgba(input, 0.15, y, 0, 0.5, SUI_T_SIZE, &create_size[1], &create_size[1], color, color, color, color) && create_size[0] * create_size[1] * create_size[2] != 0)
 			verse_send_b_dimensions_set(change_b_node_id, create_size[0], create_size[1], create_size[2]);
 		y -= 0.05;
 		sui_draw_text(0.0, y, SUI_T_SIZE, SUI_T_SPACE, "Depth:", co_line_color[0], co_line_color[1], co_line_color[2], color_light);  
-		if(sui_type_number_uint(input, 0.15, y, 0, 0.5, SUI_T_SIZE, &create_size[2], &create_size[2], color, color, color, color) && create_size[0] * create_size[1] * create_size[2] != 0)
+		if(sui_type_number_uint_rgba(input, 0.15, y, 0, 0.5, SUI_T_SIZE, &create_size[2], &create_size[2], color, color, color, color) && create_size[0] * create_size[1] * create_size[2] != 0)
 			verse_send_b_dimensions_set(change_b_node_id, create_size[0], create_size[1], create_size[2]);	
 	}
 	glPopMatrix(); 

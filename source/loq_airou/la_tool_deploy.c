@@ -54,7 +54,8 @@ void la_t_polygon_select_fill(uint poly)
     free(select);
 }
 
-create_matrix_from_polygon(double *matrix, uint *ref, boolean quad)
+/*Not currently used anywhere */
+void create_matrix_from_polygon(double *matrix, uint *ref, boolean quad)
 {
 	double origo[3], point_a[3], point_b[3], a[3], b[3], c[3], d[3];
 	udg_get_vertex_pos(a, ref[0]);

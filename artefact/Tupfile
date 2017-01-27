@@ -1,0 +1,155 @@
+include_rules
+
+#the o flag causes dependent libs
+#to not be built if the new obj didn't
+#change.
+
+!cc = |> ^o CC %b^ gcc -c %f -o %o $(CFLAGS) |> %B.o
+!ar = |> ^ AR %O^ ar rcs %o %f |>
+!app = | $(LIBDEPS) |> ^ LD %o^ gcc %f -o %o $(LIBS) |>
+
+# The order of each module in this file
+# reflects the partial order of the dependency graph
+# between modules.
+# Note: if the CFLAG definitions were put up the top,
+# one could re-order the modules in this file.
+
+###############################
+# st (math)
+###############################
+
+ST_DIR=$(ROOT)/st
+ST_SRC=$(ST_DIR)/*.c
+CFLAGS+=-I$(ST_DIR)
+
+: foreach $(ST_SRC) |> !cc |> {st_objs}
+: {st_objs} |> !ar |> libst.a
+
+###############################
+# betray (platform abstraction)
+###############################
+
+BETRAY_DIR=$(ROOT)/betray
+BETRAY_SRC=$(BETRAY_DIR)/*.c
+CFLAGS+=-I$(BETRAY_DIR)
+
+: foreach $(BETRAY_SRC) |> !cc |> {betray_objs}
+: {betray_objs} |> !ar |> libbetray.a
+
+###############################
+# verse (networked-shared data)
+###############################
+
+VERSE_DIR=$(ROOT)/verse
+VERSE_SRC=$(VERSE_DIR)/*.c
+CFLAGS+=-I$(VERSE_DIR)
+
+: foreach $(VERSE_SRC) |> !cc |> {verse_objs}
+: {verse_objs} |> !ar |> libverse.a
+
+###############################
+# enough (data storage)
+###############################
+
+ENOUGH_DIR=$(ROOT)/enough
+ENOUGH_SRC=$(ENOUGH_DIR)/*.c
+CFLAGS+=-I$(ENOUGH_DIR)
+
+: foreach $(ENOUGH_SRC) |> !cc |> {enough_objs}
+: {enough_objs} |> !ar |> libenough.a
+
+###############################
+# persuade (optional? rendering lib)
+###############################
+
+PERSUADE_DIR=$(ROOT)/persuade
+PERSUADE_SRC=$(PERSUADE_DIR)/*.c
+CFLAGS+=-I$(PERSUADE_DIR)
+
+: foreach $(PERSUADE_SRC) |> !cc |> {persuade_objs}
+: {persuade_objs} |> !ar |> libpersuade.a
+
+###############################
+# seduce (ui toolkit)
+###############################
+
+SEDUCE_DIR=$(ROOT)/seduce
+SEDUCE_SRC=$(SEDUCE_DIR)/*.c
+CFLAGS+=-I$(SEDUCE_DIR)
+
+: foreach $(SEDUCE_SRC) |> !cc |> {seduce_objs}
+: {seduce_objs} |> !ar |> libseduce.a
+
+###############################
+# deceive (user auth?)
+###############################
+
+DECEIVE_DIR=$(ROOT)/deceive
+DECEIVE_SRC=$(DECEIVE_DIR)/*.c
+CFLAGS+=-I$(DECEIVE_DIR)
+
+: foreach $(DECEIVE_SRC) |> !cc |> {deceive_objs}
+: {deceive_objs} |> !ar |> libdeceive.a
+
+###############################
+# verse application libraries
+###############################
+
+LIBS=-L. -ldeceive -lseduce -lpersuade -lenough -lverse -lbetray -lst
+LIBDEPS=lib*.a
+
+LIBS+=`sdl-config --libs`
+LIBS+=-lGL -lm
+
+###############################
+# loq_airou (graphics editor)
+###############################
+
+LOQ_AIROU_DIR=$(ROOT)/loq_airou
+LOQ_AIROU_SRC=$(LOQ_AIROU_DIR)/*.c
+CFLAGS+=-I$(LOQ_AIROU_DIR)
+
+: foreach $(LOQ_AIROU_SRC) |> !cc |> {loq_airou_objs}
+: {loq_airou_objs} |> !app |> loq_airou
+
+###############################
+# quel_solaar (verse-compatible rendering engine)
+###############################
+
+QUEL_SOLAAR_DIR=$(ROOT)/quel_solaar
+QUEL_SOLAAR_SRC=$(QUEL_SOLAAR_DIR)/*.c
+CFLAGS+=-I$(QUEL_SOLAAR_DIR)
+
+: foreach $(QUEL_SOLAAR_SRC) |> !cc |> {quel_solaar_objs}
+: {quel_solaar_objs} |> !app |> quel_solaar
+
+###############################
+# co_on (schematic verse scene editor)
+###############################
+
+CO_ON_DIR=$(ROOT)/co_on
+CO_ON_SRC=$(CO_ON_DIR)/*.c
+CFLAGS+=-I$(CO_ON_DIR)
+
+: foreach $(CO_ON_SRC) |> !cc |> {co_on_objs}
+: {co_on_objs} |> !app |> co_on
+
+###############################
+# verse utils
+###############################
+
+!util = | $(LIBDEPS) |> ^ VERSE UTIL %o^ gcc %f -o %o $(UDEFINE) $(CFLAGS) $(LIBS) |>
+
+UDEFINE=-DV_GENERATE_FUNC_MODE
+: $(VERSE_DIR)/v_cmd*.c |> !util |> verse_cmd_gen
+
+UDEFINE=-DPRIMEALONE
+: $(VERSE_DIR)/v_prime.c |> !util |> verse_prime
+
+UDEFINE=-DSTANDALONE
+: $(VERSE_DIR)/v_bignum.c |> !util |> verse_bignum
+
+UDEFINE=-DCRYPTALONE
+: $(VERSE_DIR)/v_encryption.c |> !util |> verse_encryption
+
+
