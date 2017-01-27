@@ -79,7 +79,7 @@ verse, new features, and new applications that are open source. So far I've foun
    * cvs snapshot from [verse.blender.org](http://web.archive.org/web/20120204174225/http://verse.blender.org/download/). This contains
        code for a verse server. Last modified in 2005.
     * cvs snapshot from [sourceforge](http://download.sourceforge.net/verse/verse-20010227.tar.gz), seems to be circa 2001.
-   * verse build for MacOS, Windows, and Linux from [uni-verse.org](http://web.archive.org/web/20111121231237/http://www.uni-verse.org/Download-Files-rel-3.73.0.html). Code for this is visible on archive.org [http://web.archive.org/web/20070426175952/http://projects.blender.org/viewcvs/viewcvs.cgi/verse/?cvsroot=verse], but I haven't found a downloadable link.
+   * verse build for MacOS, Windows, and Linux from [uni-verse.org](http://web.archive.org/web/20111121231237/http://www.uni-verse.org/Download-Files-rel-3.73.0.html). Code for this is visible on [archive.org](http://web.archive.org/web/20070426175952/http://projects.blender.org/viewcvs/viewcvs.cgi/verse/?cvsroot=verse), but I haven't found a downloadable link.
 
 ## Roadmap ##
 
