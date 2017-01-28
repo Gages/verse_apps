@@ -42,6 +42,7 @@ Older things:
 * [QuelSolaar.com](http://www.quelsolaar.com/verse/index.html) contains many interesting things.
 * [Verse Sourceforge.](http://verse.sourceforge.net/index-before-blender-2.3.html) The top-level index seems to redirect to a bitrotted link on blender.org. Alternatively try the [archive.org mirror](http://web.archive.org/web/20031014224210/http://verse.sourceforge.net/) circa 2003.
 * [verse.blender.org](http://web.archive.org/web/20120316140903/http://verse.blender.org/) circa March 2012. I've linked to archive.org since the actual site seems to have disappeared.
+* [uni-verse.org](http://web.archive.org/web/20111121011435/http://www.uni-verse.org/Uni-verse-Home.72.0.html). This domain has changed owner. The link goes to the archived version from November 2011.
 
 New things:
 * [Ekil's twitter feed](https://twitter.com/quelsolaar)
@@ -73,6 +74,12 @@ verse, new features, and new applications that are open source. So far I've foun
 * Adri Om, a data viewer, and advance, a profiling data collection library. http://quelsolaar.com/advance.zip
 * Confuse, a procedural character animation editor and library. http://quelsolaar.com/animator.zip
 * Quel Solaar libraries at [gamepipeline.org](http://gamepipeline.org/) , FreeBSD Licenced. http://www.quelsolaar.com/mergesource.zip
+* other verse distributions: (apart from verse 2.0, these seem to be older code than what is on quelsolaar.com)
+   * [verse 2.0 on github](https://github.com/verse/verse). Contains a verse server.
+   * cvs snapshot from [verse.blender.org](http://web.archive.org/web/20120204174225/http://verse.blender.org/download/). This contains
+       code for a verse server. Last modified in 2005.
+    * cvs snapshot from [sourceforge](http://download.sourceforge.net/verse/verse-20010227.tar.gz), seems to be circa 2001.
+   * verse build for MacOS, Windows, and Linux from [uni-verse.org](http://web.archive.org/web/20111121231237/http://www.uni-verse.org/Download-Files-rel-3.73.0.html). Code for this is visible on [archive.org](http://web.archive.org/web/20070426175952/http://projects.blender.org/viewcvs/viewcvs.cgi/verse/?cvsroot=verse), but I haven't found a downloadable link.
 
 ## Roadmap ##
 
