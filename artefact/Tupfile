@@ -37,7 +37,7 @@ CFLAGS+=-I$(BETRAY_DIR)
 : {betray_objs} |> !ar |> libbetray.a
 
 ###############################
-# verse (networked-shared data)
+# verse (networked-shared data api)
 ###############################
 
 VERSE_DIR=$(ROOT)/verse
@@ -46,6 +46,20 @@ CFLAGS+=-I$(VERSE_DIR)
 
 : foreach $(VERSE_SRC) |> !cc |> {verse_objs}
 : {verse_objs} |> !ar |> libverse.a
+
+###############################
+# verse server
+###############################
+
+VS_DIR=$(ROOT)/verse_server
+VS_SRC=$(VS_DIR)/*.c
+CFLAGS+=-I$(VS_DIR)
+
+LIBDEPS=libverse.a
+LIBS=-L. -lverse
+
+: foreach $(VS_SRC) |> !cc |> {vs_objs}
+: {vs_objs} |> !app |> verse_server
 
 ###############################
 # enough (data storage)
