@@ -1,0 +1,9 @@
+language: c
+before_script:
+  - git clone git://github.com/gittup/tup.git
+  - cd tup
+  - ./bootstrap.sh
+script:
+  - tup variant tupconf/default.config
+  - tup
+
