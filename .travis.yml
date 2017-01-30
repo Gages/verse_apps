@@ -6,21 +6,11 @@ compiler:
   - clang
   - gcc
 
-addons:
-  apt:
-    packages:
-      - libfuse-dev
-      - pkg-config
-      - fuse
- 
- before_install:
-  - sudo modprobe fuse
-  - sudo chmod 666 /dev/fuse
-  - sudo chown root:$USER /etc/fuse.conf
-before_script:
-  - git clone git://github.com/gittup/tup.git
-  - cd tup
-  - ./bootstrap.sh
+before_install:
+  - sudo add-apt-repository ppa:anatol/tup -y
+  - sudo apt-get update -q
+  - sudo apt-get install tup -y
+  
 script:
   - tup variant tupconf/default.config
   - tup
