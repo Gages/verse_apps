@@ -1,6 +1,7 @@
 sudo: false
 language: c
 addons.apt.packages:
+  - fuse
   - libfuse-dev
 before_script:
   - git clone git://github.com/gittup/tup.git
