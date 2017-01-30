@@ -1,6 +1,10 @@
 dist: trusty
-sudo: false
+sudo: required
 language: c
+
+compiler:
+  - clang
+  - gcc
 
 addons:
   apt:
@@ -8,7 +12,11 @@ addons:
       - libfuse-dev
       - pkg-config
       - fuse
-  
+ 
+ before_install:
+  - sudo modprobe fuse
+  - sudo chmod 666 /dev/fuse
+  - sudo chown root:$USER /etc/fuse.conf
 before_script:
   - git clone git://github.com/gittup/tup.git
   - cd tup
