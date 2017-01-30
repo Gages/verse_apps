@@ -24,8 +24,7 @@ tup if you don't have it already, and then run these two commands from the top l
     tup
 ```
  
- The outputs of the build are in the folder `build-default/artefacts/`. The compile process will take a minute to complete, and should look something like this:
-[![asciicast](https://asciinema.org/a/algt136yrwwibu36cko84u597.png)](https://asciinema.org/a/algt136yrwwibu36cko84u597)
+ The outputs of the build are in the folder `build-default/artefacts/`.
 
 ### Caveats ###
 
