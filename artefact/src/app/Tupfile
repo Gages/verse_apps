@@ -1,0 +1,118 @@
+include_rules
+
+###############################
+# st (math)
+###############################
+
+ST_DIR=$(ROOT)/st
+ST_SRC=$(ST_DIR)/*.c
+CFLAGS=-I$(ST_DIR)
+
+: foreach $(ST_SRC) |> !cc |> %B.o {st_objs}
+: {st_objs} |> !ar |> libst.a
+
+###############################
+# betray (platform abstraction)
+# requires st
+###############################
+
+BETRAY_DIR=$(ROOT)/betray
+BETRAY_SRC=$(BETRAY_DIR)/*.c
+CFLAGS=-I$(BETRAY_DIR) -I$(ST_DIR)
+
+: foreach $(BETRAY_SRC) |> !cc |> %B.o {betray_objs}
+: {betray_objs} |> !ar |> libbetray.a
+
+###############################
+# enough (data storage)
+# requires st, verse
+###############################
+
+ENOUGH_DIR=$(ROOT)/enough
+ENOUGH_SRC=$(ENOUGH_DIR)/*.c
+CFLAGS=-I$(ENOUGH_DIR) -I$(ST_DIR)
+
+: foreach $(ENOUGH_SRC) | $(OUTDIR)/<libverse> |> !cc |> %B.o {enough_objs}
+: {enough_objs} |> !ar |> libenough.a
+
+###############################
+# persuade (optional? rendering lib)
+# requires enough, st, verse
+###############################
+
+PERSUADE_DIR=$(ROOT)/persuade
+PERSUADE_SRC=$(PERSUADE_DIR)/*.c
+CFLAGS=-I$(PERSUADE_DIR) -I$(ENOUGH_DIR) -I$(ST_DIR)
+
+: foreach $(PERSUADE_SRC) | $(OUTDIR)/<libverse> |> !cc |> %B.o {persuade_objs}
+: {persuade_objs} |> !ar |> libpersuade.a
+
+###############################
+# seduce (ui toolkit)
+# requires st, betray, enough, verse, persuade?
+###############################
+
+SEDUCE_DIR=$(ROOT)/seduce
+SEDUCE_SRC=$(SEDUCE_DIR)/*.c
+CFLAGS=-I$(SEDUCE_DIR) -I$(ST_DIR) -I$(BETRAY_DIR) -I$(ENOUGH_DIR) -I$(PERSUADE_DIR)
+
+: foreach $(SEDUCE_SRC) | $(OUTDIR)/<libverse> |> !cc |> %B.o {seduce_objs}
+: {seduce_objs} |> !ar |> libseduce.a
+
+###############################
+# deceive (user auth?)
+# requires verse, enough, st, seduce, betray
+###############################
+
+DECEIVE_DIR=$(ROOT)/deceive
+DECEIVE_SRC=$(DECEIVE_DIR)/*.c
+CFLAGS=-I$(DECEIVE_DIR) -I$(ENOUGH_DIR) -I$(ST_DIR) -I$(SEDUCE_DIR) -I$(BETRAY_DIR)
+
+: foreach $(DECEIVE_SRC) | $(OUTDIR)/<libverse> |> !cc |> %B.o {deceive_objs}
+: {deceive_objs} |> !ar |> libdeceive.a
+
+###############################
+# verse application libraries
+###############################
+
+LFLAGS=-L. -ldeceive -lseduce -lpersuade -lenough -lbetray -lst -lverse
+LIBDEPS=lib*.a
+
+LFLAGS+=`sdl-config --libs`
+LFLAGS+=-lGL -lm
+UP_CFLAGS+=-I$(ENOUGH_DIR) -I$(ST_DIR) -I$(BETRAY_DIR) -I$(SEDUCE_DIR) -I$(DECEIVE_DIR) -I$(PERSUADE_DIR)
+
+###############################
+# loq_airou (graphics editor)
+# requires enough, st, verse, betray, seduce, deceive, persaude?
+###############################
+
+LOQ_AIROU_DIR=$(ROOT)/loq_airou
+LOQ_AIROU_SRC=$(LOQ_AIROU_DIR)/*.c
+CFLAGS=-I$(LOQ_AIROU_DIR)
+
+: foreach $(LOQ_AIROU_SRC) | $(OUTDIR)/<libverse> |> !cc |> %B.o {loq_airou_objs}
+#i don't know why this doesn't complain about implicit libverse dependency!
+: {loq_airou_objs} | $(LIBDEPS) |> !app |> $(OUTDIR)/bin/loq_airou@(EXEC_EXT)
+
+###############################
+# quel_solaar (verse-compatible rendering engine)
+###############################
+
+QUEL_SOLAAR_DIR=$(ROOT)/quel_solaar
+QUEL_SOLAAR_SRC=$(QUEL_SOLAAR_DIR)/*.c
+CFLAGS=-I$(QUEL_SOLAAR_DIR)
+
+: foreach $(QUEL_SOLAAR_SRC) | $(OUTDIR)/<libverse> |> !cc |> %B.o {quel_solaar_objs}
+: {quel_solaar_objs} | $(LIBDEPS) |> !app |> $(OUTDIR)/bin/quel_solaar@(EXEC_EXT)
+
+###############################
+# co_on (schematic verse scene editor)
+###############################
+
+CO_ON_DIR=$(ROOT)/co_on
+CO_ON_SRC=$(CO_ON_DIR)/*.c
+CFLAGS=-I$(CO_ON_DIR)
+
+: foreach $(CO_ON_SRC) | $(OUTDIR)/<libverse> |> !cc |> %B.o {co_on_objs}
+: {co_on_objs} | $(LIBDEPS) |> !app |> $(OUTDIR)/bin/co_on@(EXEC_EXT)

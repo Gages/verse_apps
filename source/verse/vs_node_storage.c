@@ -20,6 +20,8 @@ static struct {
 	VSSubscriptionList *list[V_NT_NUM_TYPES];
 } VSNodeStorage;
 
+extern void	callback_send_tag_group_create(void *user, VNodeID node_id, uint16 group_id, const char *name);
+
 void vs_init_node_storage(void)
 {
 	unsigned int i;
@@ -138,6 +140,13 @@ VNodeID vs_node_create(VNodeID owner_id, unsigned int type)
 	if(count != 0)
 		vs_reset_subscript_session();
 	return node_id;
+}
+
+/* Initialize an object node into being an avatar. */
+void vs_avatar_init(VNodeID id, const char *name)
+{
+	callback_send_tag_group_create(NULL, id, (short) ~0u, "avatar");
+	/* FIXME: Populate the group, too. */
 }
 
 void vs_reset_owner(VNodeID owner_id)

@@ -1,0 +1,124 @@
+include_rules
+
+# This build script proceeds in stages:
+# 1. build the "verse_tool_gen" from the v_cmd*.c files,
+#    and execute the command to produce the v_gen*.c files,
+#    as well as the verse.h header and internal headers;
+# 2. using the generated sources + original sources,
+#    create the libverse.a file, and copy the lib
+#    and its header to the output directories.
+# 3. create all the artefacts which depend on libverse
+#    verse server, examples, and tests
+
+# Ultimately the following relevant artefacts are produced
+# as the "public api" of this build script:
+# $(OUTDIR)/lib/libverse.a
+# $(OUTDIR)/include/verse.h
+# in group $(OUTDIR)/<libverse>;
+
+# The following artefacts of note are created within this
+# directory:
+# verse_tool_gen
+# verse_example_listnodes
+# verse_test_{ms,encryption,bignum}
+
+#######################################
+
+SRC_DIR=$(ROOT)/verse
+
+#######################################
+# verse_tool_gen
+# v_gen*.c
+# v_internal_verse.h
+# verse.h
+#######################################
+
+CFLAGS=-DV_GENERATE_FUNC_MODE
+: foreach $(SRC_DIR)/v_cmd*.c |> !cc |> gen_%B.o
+: gen_*.o |> ^ TOOL %o^ gcc %f -o %o |> verse_tool_gen {tool_gen}
+
+# need to specify outputs so that the build DAG is explicit
+GENSRC+= v_internal_verse.h
+GENSRC+= verse.h
+GENSRC+= v_gen_unpack_func.h
+GENSRC+= v_gen_pack_init.c
+GENSRC+= v_gen_pack_s_node.c
+GENSRC+= v_gen_pack_a_node.c
+GENSRC+= v_gen_pack_c_node.c
+GENSRC+= v_gen_pack_t_node.c
+GENSRC+= v_gen_pack_b_node.c
+GENSRC+= v_gen_pack_m_node.c
+GENSRC+= v_gen_pack_g_node.c
+GENSRC+= v_gen_pack_o_node.c
+
+# run the api gen tool to produce the api source files
+: {tool_gen} |> ^ RUN %f^ ./%f -src=$(SRC_DIR)/ > /dev/null |> $(GENSRC)
+
+#########################################
+# $(OUTDIR)/lib/libverse.a
+# $(OUTDIR)/include/verse.h
+# in group $(OUTDIR)/<libverse>
+#########################################
+
+# TODO currently the $(SRC_DIR)/v_*.c pattern
+# picks up unneccessary v_cmd*.c files
+# this is harmless since they are disabled
+# internally by ifdefs.
+# It may be desirable to move these to a seperate
+# directory to more clearly seperate build
+# into stages and avoid a few no-op compilation
+# commands.
+
+CFLAGS=-I. -I$(SRC_DIR)
+: foreach *.c $(SRC_DIR)/v_*.c | $(GENSRC) |> !cc |> %B.o {lib_objs}
+
+# copy header and lib to output dir with group
+: {lib_objs} |> !ar |> $(OUTDIR)/lib/libverse.a | $(OUTDIR)/<libverse>
+: verse.h |> ^ INCLUDE %o^ cp %f %o |> $(OUTDIR)/include/%b | $(OUTDIR)/<libverse>
+
+#########################################
+# verse_server
+#########################################
+
+: foreach $(SRC_DIR)/vs_*.c | $(OUTDIR)/<libverse> |> !cc |> %B.o {vs_objs}
+
+LFLAGS=-lverse
+EXEC_NAME=verse_server
+:  {vs_objs} | $(OUTDIR)/<libverse> |> !app |> $(OUTDIR)/bin/$(EXEC_NAME)@(EXEC_EXT)
+
+#########################################
+# verse_example_listnode
+#########################################
+
+# currently we assume that each example is
+# a single .c file in the $(SRC_DIR)/examples/ directory which
+# contains a main entry point and depends only on libverse
+# this assumption means we can use a single command
+# to build and link each example.
+
+!example = | $(OUTDIR)/<libverse> |> ^ OTHER %o^ gcc %f -o %o $(CFLAGS) $(UP_CFLAGS) $(LFLAGS) $(UP_LFLAGS) |>
+:  foreach $(SRC_DIR)/examples/*.c |> !example |> verse_example_%B@(EXEC_EXT)
+
+##########################################
+# verse_other_bignum
+# verse_other_encryption
+# verse_other_ms
+# verse_other_prime
+##########################################
+
+# These four files are in the verse source directory
+# and require individual CFLAG definitions,
+# so they cant be built with a single foreach rule.
+# They should probably be refactored as examples (see above)
+
+CFLAGS=-DVERSE_MS_STANDALONE
+: $(SRC_DIR)/verse_ms.c |> !example |> verse_other_ms
+
+CFLAGS=-DPRIMEALONE
+: $(SRC_DIR)/v_prime.c |> !example |> verse_other_prime
+
+CFLAGS=-DSTANDALONE
+: $(SRC_DIR)/v_bignum.c |> !example |> verse_other_bignum
+
+CFLAGS=-DCRYPTALONE
+: $(SRC_DIR)/v_encryption.c |> !example |> verse_other_encryption

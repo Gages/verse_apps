@@ -32,10 +32,14 @@ typedef unsigned short uint16;
 typedef short int16;
 typedef unsigned char uint8;
 typedef char int8;
-typedef char boolean;
+typedef unsigned char boolean;
 
 #include "v_cmd_gen.h"
 #include "v_network.h"
+
+#if !defined socklen_t
+#define socklen_t int
+#endif
 
 #define	TRUE	1
 #define	FALSE	0
@@ -100,9 +104,9 @@ VSocket v_n_socket_create(void)
 		fprintf(stderr, "v_network: Failed to bind(), code %d (%s)\n", errno, strerror(errno));
 		exit(0); /* FIX ME */
 	}
-	if(setsockopt(my_socket, SOL_SOCKET, SO_SNDBUF, &buffer_size, sizeof buffer_size) != 0)
+	if(setsockopt(my_socket, SOL_SOCKET, SO_SNDBUF, (const char *) &buffer_size, sizeof buffer_size) != 0)
 		fprintf(stderr, "v_network: Couldn't set send buffer size of socket to %d\n", buffer_size);
-	if(setsockopt(my_socket, SOL_SOCKET, SO_RCVBUF, &buffer_size, sizeof buffer_size) != 0)
+	if(setsockopt(my_socket, SOL_SOCKET, SO_RCVBUF, (const char *) &buffer_size, sizeof buffer_size) != 0)
 		fprintf(stderr, "v_network: Couldn't set receive buffer size of socket to %d\n", buffer_size);
 	return my_socket;
 }
@@ -209,7 +213,8 @@ unsigned int v_n_wait_for_incoming(unsigned int microseconds)
 int v_n_receive_data(VNetworkAddress *address, char *data, size_t length)
 {
 	struct	sockaddr_in address_in;
-	int	from_length = sizeof address_in, len;
+	socklen_t from_length = sizeof address_in;
+	size_t	len;
 
 	if(v_n_socket_create() == -1)
 		return 0;

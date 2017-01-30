@@ -1,3 +1,5 @@
 /*.tga
 .tup
 /build-*
+/*.rsa
+/*.bin

@@ -23,9 +23,12 @@ typedef struct {
 typedef struct {
 	VSNodeHead	head;
 	uint16		size[3];
+	uint32		partial_tile_col, partial_tile_row;	/* These rows/columns are partial. ~0 for none. */
 	VSNBLayers	*layers;
 	unsigned int	layer_count;
 } VSNodeBitmap;
+
+static unsigned long	tile_counter = 0;
 
 VSNodeBitmap * vs_b_create_node(unsigned int owner)
 {
@@ -39,6 +42,8 @@ VSNodeBitmap * vs_b_create_node(unsigned int owner)
 	node->size[0] = 0;
 	node->size[1] = 0;
 	node->size[2] = 0;
+	node->partial_tile_col = ~0;
+	node->partial_tile_row = ~0;
 	node->layers = NULL;
 	node->layer_count = 0;
 
@@ -80,7 +85,8 @@ void vs_b_unsubscribe(VSNodeBitmap *node)
 static void callback_send_b_dimensions_set(void *user, VNodeID node_id, uint16 width, uint16 height, uint16 depth)
 {
 	VSNodeBitmap *node;
-	unsigned int i, j, k, count, tiles[2], read, write, end;
+	unsigned int i, j, k, count, tiles[2], read, write, end = 0;
+
 	if((node = (VSNodeBitmap *)vs_get_node(node_id, V_NT_BITMAP)) == NULL)
 		return;
 	tiles[0] = (width + VN_B_TILE_SIZE - 1) / VN_B_TILE_SIZE;
@@ -246,15 +252,14 @@ static void callback_send_b_dimensions_set(void *user, VNodeID node_id, uint16 w
 				}
 				break;
 			}
-			
-
-
 		}
 	}
 
 	node->size[0] = width;
 	node->size[1] = height;
 	node->size[2] = depth;
+	node->partial_tile_col = (width  % VN_B_TILE_SIZE) != 0 ? (width  + VN_B_TILE_SIZE - 1) / VN_B_TILE_SIZE - 1 : ~0;
+	node->partial_tile_row = (height % VN_B_TILE_SIZE) != 0 ? (height + VN_B_TILE_SIZE - 1) / VN_B_TILE_SIZE - 1 : ~0;
 	count =	vs_get_subscript_count(node->head.subscribers);
 	for(i = 0; i < count; i++)
 	{
@@ -268,12 +273,13 @@ static void callback_send_b_layer_create(void *user, VNodeID node_id, VLayerID l
 {
 	VSNodeBitmap *node;
 	unsigned int i, count;
+
 	if((node = (VSNodeBitmap *)vs_get_node(node_id, V_NT_BITMAP)) == NULL)
 		return;
-
 	if(node->layer_count <= layer_id || node->layers[layer_id].name[0] == 0)
 	{
-		for(layer_id = 0; layer_id < node->layer_count && node->layers[layer_id].name[0] != 0; layer_id++);
+		for(layer_id = 0; layer_id < node->layer_count && node->layers[layer_id].name[0] != 0; layer_id++)
+			;
 		if(layer_id == node->layer_count)
 		{
 			node->layers = realloc(node->layers, (sizeof *node->layers) * (node->layer_count + 16));
@@ -302,7 +308,7 @@ static void callback_send_b_layer_create(void *user, VNodeID node_id, VLayerID l
 			{
 				case VN_B_LAYER_UINT1 :
 					node->layers[layer_id].layer = malloc(sizeof(uint8) * count / 8);
-					memset(node->layers[layer_id].layer, 0, count / 8 * sizeof(uint8));
+					memset(node->layers[layer_id].layer, 0, count * sizeof(uint8) / 8);
 				break;
 				case VN_B_LAYER_UINT8 :
 					node->layers[layer_id].layer = malloc(sizeof(uint8) * count);
@@ -423,6 +429,45 @@ static void callback_send_b_layer_unsubscribe(void *user, VNodeID node_id, VLaye
 	vs_remove_subscriptor(node->layers[layer_id].subscribers);
 }
 
+/* Clear any pixels that lie outside the image, so we don't violoate specs when
+ * sending (stored version of) the tile out to subscribers.
+*/
+static void clear_outside(const VSNodeBitmap *node, uint16 tile_x, uint16 tile_y, uint8 type, VNBTile *tile)
+{
+	int	x, y, bx, by, p;
+
+	by = tile_y * VN_B_TILE_SIZE;
+	for(y = p = 0; y < VN_B_TILE_SIZE; y++, by++)
+	{
+		bx = tile_x * VN_B_TILE_SIZE;
+		for(x = 0; x < VN_B_TILE_SIZE; x++, bx++, p++)
+		{
+			/* Simply test current pixel against bitmap size. Not quick, but simple. */
+			if(bx >= node->size[0] || by >= node->size[1])
+			{
+				switch(type)
+				{
+				case VN_B_LAYER_UINT1:
+					tile->vuint1[y] &= ~(128 >> x);
+					break;
+				case VN_B_LAYER_UINT8:
+					tile->vuint8[p] = 0;
+					break;
+				case VN_B_LAYER_UINT16:
+					tile->vuint16[p] = 0;
+					break;
+				case VN_B_LAYER_REAL32:
+					tile->vreal32[p] = 0.0f;
+					break;
+				case VN_B_LAYER_REAL64:
+					tile->vreal64[p] = 0.0;
+					break;
+				}
+			}
+		}
+	}
+}
+
 static void callback_send_b_tile_set(void *user, VNodeID node_id, VLayerID layer_id,
 				     uint16 tile_x, uint16 tile_y, uint16 tile_z, uint8 type, VNBTile *data)
 {
@@ -430,15 +475,30 @@ static void callback_send_b_tile_set(void *user, VNodeID node_id, VLayerID layer
 	unsigned int i, count, tile[3];
 
 	if((node = (VSNodeBitmap *)vs_get_node(node_id, V_NT_BITMAP)) == NULL)
+	{
+		printf("got tile for unknown bitmpa node %u, aborting\n", node_id);
 		return;
+	}
 	if(layer_id >= node->layer_count || node->layers[layer_id].layer == NULL || node->layers[layer_id].type != type)
+	{
+		printf("node %u got tile for bad layer %u (have %u) %p\n", node_id, layer_id, node->layer_count, layer_id < node->layer_count ? node->layers[layer_id].layer : NULL);
 		return;
+	}
 	if(tile_x >= ((node->size[0] + VN_B_TILE_SIZE - 1) / VN_B_TILE_SIZE) || tile_y >= ((node->size[1] + VN_B_TILE_SIZE - 1) / VN_B_TILE_SIZE) || tile_z >= node->size[2])
+	{
+		printf("got tile that is outside image, at (%u,%u,%u)\n", tile_x, tile_y, tile_z);
 		return;
+	}
+
+	tile_counter++;
 
 	tile[0] = ((node->size[0] + VN_B_TILE_SIZE - 1) / VN_B_TILE_SIZE);
 	tile[1] = ((node->size[1] + VN_B_TILE_SIZE - 1) / VN_B_TILE_SIZE);
 	tile[2] = node->size[2];
+
+	/* If tile is in a partial column or row, clear the "outside" pixels. */
+	if((uint32) tile_x == node->partial_tile_col || (uint32) tile_y == node->partial_tile_row)
+		clear_outside(node, tile_x, tile_y, type, data);
 
 	switch(node->layers[layer_id].type)
 	{

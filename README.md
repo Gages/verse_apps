@@ -13,16 +13,17 @@ I am interested in this software because:
     
 ## Compiling ##
 
-I've added a basic build system using [tup](http://gittup.org/tup/). Look in the file `artefact/Tupfile` which contains nearly all of the build rules. To compile, follow the instructions to install tup if you don't have it already, and then run these two commands from the top level of the repository:
+I've added a basic build system using [tup](http://gittup.org/tup/). Look in the `artefact`
+directory, which contains all the build scripts. To compile, follow the instructions to install
+tup if you don't have it already, and then run these two commands from the top level of the repository:
 
 ```
     tup variant tupconfig/default.config
     tup
 ```
  
- The outputs of the build are in the folder `build-default/artefacts/`. The compile process should look something like this:
- 
-[![asciicast](https://asciinema.org/a/d6f3nizdu572a90hkx1wvt0ff.png)](https://asciinema.org/a/d6f3nizdu572a90hkx1wvt0ff)
+ The outputs of the build are in the folder `build-default/artefacts/`. The compile process will take a minute to complete, and should look something like this:
+[![asciicast](https://asciinema.org/a/algt136yrwwibu36cko84u597.png)](https://asciinema.org/a/algt136yrwwibu36cko84u597)
 
 ### Caveats ###
 
@@ -32,11 +33,18 @@ I've added a basic build system using [tup](http://gittup.org/tup/). Look in the
 
 ## Origin ##
 
-The original source of this repository was a zip file  http://quelsolaar.com/files/verse_apps.zip, which I downloaded in February 2017. Please see [quelsolaar.com](http://quelsolaar.com/) for more information on the origin of this code and the purpose of the apps contained within. The sha1 checksum of the file when I downloaded it was `97fac3d14419935063151d1b404165bcb7db8338`.  For future people, here is an [archive.org mirror](http://web.archive.org/web/20160417060951/http://www.quelsolaar.com/files/verse_apps.zip) from April 17th 2016  with the same hash.
+The original source of this repository was:
+
+    * A zip file  http://quelsolaar.com/files/verse_apps.zip, with sha1 hash `97fac3d144199350
+    63151d1b404165bcb7db8338`. Future people might prefer to download from the [archive.org mirror](http://web.archive.org/web/201
+    60417060951/http://www.quelsolaar.com/files/verse_apps.zip).
+    * A copy of the verse library and server from the [blender-staging git repository](https://developer.blender.org/diffusion/BS/browse/master/extern/verse/dist;0bd7934be731aba65680c7fe59f2d89a06391899), from a commit in 2009. 
+
+Please see [quelsolaar.com](http://quelsolaar.com/) for more information on the origin of this code and the purpose of the apps contained within.
 
 ## Links to Eskil's Old and New stuff ##
 
-Here are some links to relevant things.
+Here are some links to relevant things. These links provide further documentation, for now.
 
 Older things:
 * [QuelSolaar.com](http://www.quelsolaar.com/verse/index.html) contains many interesting things.
@@ -74,17 +82,11 @@ verse, new features, and new applications that are open source. So far I've foun
 * Adri Om, a data viewer, and advance, a profiling data collection library. http://quelsolaar.com/advance.zip
 * Confuse, a procedural character animation editor and library. http://quelsolaar.com/animator.zip
 * Quel Solaar libraries at [gamepipeline.org](http://gamepipeline.org/) , FreeBSD Licenced. http://www.quelsolaar.com/mergesource.zip
-* other verse distributions: (apart from verse 2.0, these seem to be older code than what is on quelsolaar.com)
-   * [verse 2.0 on github](https://github.com/verse/verse). Contains a verse server.
-   * cvs snapshot from [verse.blender.org](http://web.archive.org/web/20120204174225/http://verse.blender.org/download/). This contains
-       code for a verse server. Last modified in 2005.
-    * cvs snapshot from [sourceforge](http://download.sourceforge.net/verse/verse-20010227.tar.gz), seems to be circa 2001.
-   * verse build for MacOS, Windows, and Linux from [uni-verse.org](http://web.archive.org/web/20111121231237/http://www.uni-verse.org/Download-Files-rel-3.73.0.html). Code for this is visible on [archive.org](http://web.archive.org/web/20070426175952/http://projects.blender.org/viewcvs/viewcvs.cgi/verse/?cvsroot=verse), but I haven't found a downloadable link.
+* [verse 2.0 on github](https://github.com/verse/verse). I chose not to use this for now, as I don't understand the verse protocol and can't say if it is compatible with the client applications here.
 
 ## Roadmap ##
 
 * [ ] Contact Eskil and ask about licenses and newer versions, and show him this repository.
-* [ ] Ask Eskil about an open source verse server implementation, or implement one. This is important as loq_airou is basically useless without one. (A binary version compiled for windows is available in the mentioned .zip file.)
 * [ ] Change SDL dependency to SDL2.
 * [ ] Modify code to remove all compiler warnings.
 * [ ] Integrate additional code into this repository, first in seperate folders, later without duplications. (After a test suite exists)
