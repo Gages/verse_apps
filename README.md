@@ -13,6 +13,8 @@ I am interested in this software because:
     
 ## Compiling ##
 
+[![Build Status](https://travis-ci.org/Gages/verse_apps.svg?branch=master)](https://travis-ci.org/Gages/verse_apps)
+
 I've added a basic build system using [tup](http://gittup.org/tup/). Look in the `artefact`
 directory, which contains all the build scripts. To compile, follow the instructions to install
 tup if you don't have it already, and then run these two commands from the top level of the repository:
