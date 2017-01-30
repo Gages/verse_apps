@@ -2,8 +2,8 @@ sudo: false
 language: c
 addons.apt.packages:
   - fuse
-  - libfuse2
   - libfuse-dev
+  - pkg-config
 before_script:
   - git clone git://github.com/gittup/tup.git
   - cd tup
