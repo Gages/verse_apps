@@ -1,10 +1,6 @@
-dist: trusty
+dist: precise
 sudo: required
 language: c
-
-compiler:
-  - clang
-  - gcc
 
 before_install:
   - sudo add-apt-repository ppa:anatol/tup -y
