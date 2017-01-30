@@ -1,9 +1,14 @@
+dist:trusty
 sudo: false
 language: c
-addons.apt.packages:
-  - fuse
-  - libfuse-dev
-  - pkg-config
+
+addons:
+  apt:
+    packages:
+      - libfuse-dev
+      - pkg-config
+      - fuse
+  
 before_script:
   - git clone git://github.com/gittup/tup.git
   - cd tup
