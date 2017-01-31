@@ -24,4 +24,5 @@ before_script:
   
 script:
   - tup variant tupconf/travis.config
+  - cat build-travis/tup.config
   - tup --verbose
