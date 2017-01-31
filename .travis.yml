@@ -12,9 +12,9 @@ compiler:
     - clang
     - gcc
     
- os:
-   - linux
-   - osx
+os:
+  - linux
+  - osx
 
 matrix:
   allow_failures:
