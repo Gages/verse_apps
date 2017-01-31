@@ -6,6 +6,11 @@ addons:
   apt:
     packages:
     - libsdl1.2-dev
+    - lua5.1
+
+compiler:
+    - clang
+    - gcc
 
 before_install:
   - sudo add-apt-repository ppa:anatol/tup -y
@@ -13,6 +18,7 @@ before_install:
   - sudo apt-get install tup -y
   
 script:
-  - tup variant tupconf/default.config
-  - tup
+  - lua tupconf/travisconf.lua tupconf/travis.config
+  - tup variant tupconf/travis.conf
+  - tup build-travis
 

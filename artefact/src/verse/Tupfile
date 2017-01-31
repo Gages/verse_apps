@@ -35,7 +35,7 @@ SRC_DIR=$(ROOT)/verse
 
 CFLAGS=-DV_GENERATE_FUNC_MODE
 : foreach $(SRC_DIR)/v_cmd*.c |> !cc |> gen_%B.o
-: gen_*.o |> ^ TOOL %o^ gcc %f -o %o |> verse_tool_gen {tool_gen}
+: gen_*.o |> ^ TOOL %o^ @(CC) %f -o %o |> verse_tool_gen {tool_gen}
 
 # need to specify outputs so that the build DAG is explicit
 GENSRC+= v_internal_verse.h
@@ -96,7 +96,7 @@ EXEC_NAME=verse_server
 # this assumption means we can use a single command
 # to build and link each example.
 
-!example = | $(OUTDIR)/<libverse> |> ^ OTHER %o^ gcc %f -o %o $(CFLAGS) $(UP_CFLAGS) $(LFLAGS) $(UP_LFLAGS) |>
+!example = | $(OUTDIR)/<libverse> |> ^ OTHER %o^ @(CC) %f -o %o $(CFLAGS) $(UP_CFLAGS) $(LFLAGS) $(UP_LFLAGS) |>
 :  foreach $(SRC_DIR)/examples/*.c |> !example |> verse_example_%B@(EXEC_EXT)
 
 ##########################################

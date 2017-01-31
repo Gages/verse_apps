@@ -8,7 +8,7 @@ UP_CFLAGS+=-I$(OUTDIR)/include
 UP_LFLAGS+=-L$(OUTDIR)/lib
 
 # cc is for creating intermediate object files
-!cc  = |> ^ CC %o^ gcc -c %f -o %o $(CFLAGS) $(UP_CFLAGS) |>
+!cc  = |> ^ CC %o^ @(CC) -c %f -o %o $(CFLAGS) $(UP_CFLAGS) |>
 
 # ar is for creating static libraries
 !ar  = |> ^ LIB %o^ ar rcs %o %f |>
@@ -16,5 +16,5 @@ UP_LFLAGS+=-L$(OUTDIR)/lib
 # App is for creating output executables.
 # It is recommended to use the config flag @(EXEC_EXT)
 # to create them with the correct extension for the platorm
-!app = |> ^ BIN %o^ gcc %f -o %o $(LFLAGS) $(UP_LFLAGS) |>
+!app = |> ^ BIN %o^ @(CC) %f -o %o $(LFLAGS) $(UP_LFLAGS) |>
 
