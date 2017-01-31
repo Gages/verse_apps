@@ -23,4 +23,4 @@ before_script:
   
 script:
   - tup variant tupconf/travis.conf
-  - tup
+  - tup --verbose
