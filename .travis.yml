@@ -16,9 +16,11 @@ before_install:
   - sudo add-apt-repository ppa:anatol/tup -y
   - sudo apt-get update -q
   - sudo apt-get install tup -y
+
+before_script:
+  - cd tupconf
+  - lua travisconf.lua travis.config
   
 script:
-  - lua tupconf/travisconf.lua tupconf/travis.config
   - tup variant tupconf/travis.conf
   - tup build-travis
-
