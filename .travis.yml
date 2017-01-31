@@ -11,6 +11,14 @@ addons:
 compiler:
     - clang
     - gcc
+    
+ os:
+   - linux
+   - osx
+
+matrix:
+  allow_failures:
+    - os: osx
 
 before_install:
   - sudo add-apt-repository ppa:anatol/tup -y
