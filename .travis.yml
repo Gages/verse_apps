@@ -17,12 +17,7 @@ before_install:
   - sudo apt-get update -q
   - sudo apt-get install tup -y
 
-before_script:
-  - cd tupconf
-  - lua travisconf.lua travis.config
-  - cat travis.config
-  
 script:
-  - tup variant tupconf/travis.config
-  - cat build-travis/tup.config
+  - ( cd tupconf && lua travisconf.lua travis.config )
+  - tup variant tupconf/travis.config; cat build-travis/tup.config
   - tup --verbose
