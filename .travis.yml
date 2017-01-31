@@ -22,5 +22,5 @@ before_script:
   - lua travisconf.lua travis.config
   
 script:
-  - tup variant tupconf/travis.conf
+  - tup variant tupconf/travis.config
   - tup --verbose

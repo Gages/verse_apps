@@ -2,3 +2,7 @@
 ROOT=$(TUP_CWD)/source
 UP_CFLAGS=-Wno-deprecated-declarations
 #UP_CFLAGS+=-Werror -Wall
+
+ifndef CC
+    error "CC must be set in the config file"
+endif
