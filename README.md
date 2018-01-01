@@ -36,8 +36,7 @@ tup if you don't have it already, and then run these two commands from the top l
 
 The original source of this repository was:
 
- * A zip file  http://quelsolaar.com/files/verse_apps.zip, with sha1 hash `97fac3d144199350
-    63151d1b404165bcb7db8338`. Future people might prefer to download from the [archive.org mirror](http://web.archive.org/web/20160417060951/http://www.quelsolaar.com/files/verse_apps.zip).
+ * A zip file  http://quelsolaar.com/files/verse_apps.zip, with sha1 hash `97fac3d14419935063151d1b404165bcb7db8338`. Future people might prefer to download from the [archive.org mirror](http://web.archive.org/web/20160417060951/http://www.quelsolaar.com/files/verse_apps.zip).
  * A copy of the verse library and server from the [blender-staging git repository](https://developer.blender.org/diffusion/BS/browse/master/extern/verse/dist;0bd7934be731aba65680c7fe59f2d89a06391899), from a commit in 2009. 
 
 Please see [quelsolaar.com](http://quelsolaar.com/) for more information on the origin of this code and the purpose of the apps contained within.
