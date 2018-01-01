@@ -87,7 +87,6 @@ verse, new features, and new applications that are open source. So far I've foun
 
 ## Roadmap ##
 
-* [ ] Contact Eskil and ask about licenses and newer versions, and show him this repository.
 * [ ] Change SDL dependency to SDL2.
 * [ ] Modify code to remove all compiler warnings.
 * [ ] Integrate additional code into this repository, first in seperate folders, later without duplications. (After a test suite exists)
