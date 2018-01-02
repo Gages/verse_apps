@@ -27,10 +27,9 @@ before_install:
   - cd tup
   - ./bootstrap.sh
   - ./tup
-  - alias tup='$HOME/tup/tup'
   - cd $TRAVIS_BUILD_DIR
 
 script:
   - ( cd tupconf && lua travisconf.lua travis.config )
-  - tup variant tupconf/travis.config; cat build-travis/tup.config
-  - tup --verbose
+  - $HOME/tup/tup variant tupconf/travis.config; cat build-travis/tup.config
+  - $HOME/tup/tup --verbose
