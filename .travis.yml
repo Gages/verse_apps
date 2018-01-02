@@ -1,5 +1,5 @@
-dist: precise
-sudo: required
+dist: trusty
+sudo: false
 language: c
 
 addons:
@@ -21,9 +21,10 @@ matrix:
     - os: osx
 
 before_install:
-  - sudo add-apt-repository ppa:anatol/tup -y
-  - sudo apt-get update -q
-  - sudo apt-get install tup -y
+  - git clone https://github.com/gittup/tup.git
+  - cd tup
+  - ./bootstrap.sh
+  - alias tup=~/tup/tup
 
 script:
   - ( cd tupconf && lua travisconf.lua travis.config )
