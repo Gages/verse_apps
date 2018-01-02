@@ -78,8 +78,12 @@ CFLAGS=-I$(DECEIVE_DIR) -I$(ENOUGH_DIR) -I$(ST_DIR) -I$(SEDUCE_DIR) -I$(BETRAY_D
 LFLAGS=-L. -ldeceive -lseduce -lpersuade -lenough -lbetray -lst -lverse
 LIBDEPS=lib*.a
 
-LFLAGS+=`sdl-config --libs`
-LFLAGS+=-lGL -lm
+ifdef WIN32
+    LFLAGS+=-lmingw32 -lSDLmain -lSDL -lopengl32 -lws2_32
+else
+    LFLAGS+=`sdl-config --libs`
+    LFLAGS+=-lGL -lm
+endif
 UP_CFLAGS+=-I$(ENOUGH_DIR) -I$(ST_DIR) -I$(BETRAY_DIR) -I$(SEDUCE_DIR) -I$(DECEIVE_DIR) -I$(PERSUADE_DIR)
 
 ###############################

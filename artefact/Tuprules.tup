@@ -4,11 +4,12 @@ OUTDIR=$(TUP_CWD)
 # normal (sans "UP") versions so that they can be overrided
 # by rule-specific flags if necessary.
 
-UP_CFLAGS+=-I$(OUTDIR)/include
-UP_LFLAGS+=-L$(OUTDIR)/lib
+UP_CFLAGS+=-I$(OUTDIR)/include @(CFLAGS)
+UP_LFLAGS+=-L$(OUTDIR)/lib @(LFLAGS)
 
 # cc is for creating intermediate object files
 !cc  = |> ^ CC %o^ @(CC) -c %f -o %o $(CFLAGS) $(UP_CFLAGS) |>
+!cc_native = |> ^ CC Native %o^ @(CC_NATIVE) -c %f -o %o $(CFLAGS) $(UP_CFLAGS) |>
 
 # ar is for creating static libraries
 !ar  = |> ^ LIB %o^ ar rcs %o %f |>

@@ -34,8 +34,8 @@ SRC_DIR=$(ROOT)/verse
 #######################################
 
 CFLAGS=-DV_GENERATE_FUNC_MODE
-: foreach $(SRC_DIR)/v_cmd*.c |> !cc |> gen_%B.o
-: gen_*.o |> ^ TOOL %o^ @(CC) %f -o %o |> verse_tool_gen {tool_gen}
+: foreach $(SRC_DIR)/v_cmd*.c |> !cc_native |> gen_%B.o
+: gen_*.o |> ^ TOOL %o^ @(CC_NATIVE) %f -o %o |> verse_tool_gen {tool_gen}
 
 # need to specify outputs so that the build DAG is explicit
 GENSRC+= v_internal_verse.h
@@ -83,6 +83,9 @@ CFLAGS=-I. -I$(SRC_DIR)
 : foreach $(SRC_DIR)/vs_*.c | $(OUTDIR)/<libverse> |> !cc |> %B.o {vs_objs}
 
 LFLAGS=-lverse
+ifdef WIN32
+    LFLAGS+=-lws2_32
+endif
 EXEC_NAME=verse_server
 :  {vs_objs} | $(OUTDIR)/<libverse> |> !app |> $(OUTDIR)/bin/$(EXEC_NAME)@(EXEC_EXT)
 
