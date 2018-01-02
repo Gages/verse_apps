@@ -49,21 +49,30 @@ local function write_var(name, value)
     outfile:write(string.format("CONFIG_%s=%s\n", name, value))
 end
 
+local function is_renamed(spec)
+    return type(spec) == "table" and type(spec.copyfrom) == "string"
+end
+
 do
     for name, default in pairs(vars) do
         local value = os.getenv(name)
         if value == nil then
             if default == true then
                 error(string.format("Mandatory envvar %s was not set.", name))
+            elseif is_renamed(default) then
+                value = os.getenv(default.copyfrom)
             else
-                write_var(name, tostring(default))
+                value = tostring(default)
             end
-        else
-          write_var(name, value)
         end
+        write_var(name, value)
     end
 end
 
 outfile:close()
 
 end --function create_config
+
+function renamed(name)
+    return {copyfrom = name}
+end
