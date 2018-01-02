@@ -25,7 +25,7 @@ before_install:
   - git clone https://github.com/gittup/tup.git
   - cd tup
   - ./bootstrap.sh
-  - alias tup=~/tup/tup
+  - alias tup='`pwd`/tup'
 
 script:
   - ( cd tupconf && lua travisconf.lua travis.config )
