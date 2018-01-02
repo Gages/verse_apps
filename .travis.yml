@@ -22,10 +22,11 @@ matrix:
     - os: osx
 
 before_install:
+  - cd $HOME
   - git clone https://github.com/gittup/tup.git
   - cd tup
   - ./bootstrap.sh
-  - alias tup='`pwd`/tup'
+  - alias tup='$HOME/tup/tup'
 
 script:
   - ( cd tupconf && lua travisconf.lua travis.config )
