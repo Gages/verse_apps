@@ -22,7 +22,7 @@ directory, which contains all the build scripts. To compile, follow the instruct
 tup if you don't have it already, and then run these two commands from the top level of the repository:
 
 ```
-    tup variant tupconfig/default.config
+    tup variant tupconf/default.config
     tup
 ```
  
