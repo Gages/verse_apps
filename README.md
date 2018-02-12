@@ -2,7 +2,8 @@
 
 This repository contains code by Eskil Steenberg, with some small
 changes by me, Phillip Warren. My first goal for this repository
-is to port LoqAirou (3D modelling tool) to the browser via emscripten.
+is to  get LoqAirou (3D modelling tool) to work without segfaulting with the included
+the verse server implementation on Windows and Linux.
 
 I am interested in this software because:
     
