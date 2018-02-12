@@ -18,6 +18,8 @@ Please see [this Wiki page](https://github.com/Gages/verse_apps/wiki/Loq-Airou-D
 
 [![Build Status](https://travis-ci.org/Gages/verse_apps.svg?branch=master)](https://travis-ci.org/Gages/verse_apps)
 
+[There are detailed build instructions for Ubuntu 16.04.](https://github.com/Gages/verse_apps/wiki/Detailed-Build-Instructions:-Ubuntu-16.04)
+
 I've added a basic build system using [tup](http://gittup.org/tup/). Look in the `artefact`
 directory, which contains all the build scripts. To compile, follow the instructions to install
 tup if you don't have it already, and then run these two commands from the top level of the repository:
