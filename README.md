@@ -2,7 +2,7 @@
 
 This repository contains code by Eskil Steenberg, with some small
 changes by me, Phillip Warren. My first goal for this repository
-is to port Loq Airou (3D modelling tool) to the browser via emscripten.
+is to port LoqAirou (3D modelling tool) to the browser via emscripten.
 
 I am interested in this software because:
     
@@ -10,6 +10,8 @@ I am interested in this software because:
   * It is well architectured, easy to compile (portable c).
   * Eskil's ideas are interesting. Some of his links on quelsolaar.com are bitrotting and it would
     be a shame to lose his creative work to bit rot.
+    
+Please see [this Wiki page](https://github.com/Gages/verse_apps/wiki/Loq-Airou-Demonstrations) for links to video demonstrations of LoqAirou.
     
 ## Compiling ##
 
